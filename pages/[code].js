@@ -25,7 +25,6 @@ export default function Game() {
     const [rowPointer, setRowPointer] = useState(0);
     const [gameOver, setGameOver] = useState(false);
     const [helpModalOpen, setHelpModalOpen] = useState(false);
-    const [win, setWin] = useState(false);
     const [loss, setLoss] = useState(false);
 
     const contentRef = useRef(null);
@@ -61,7 +60,6 @@ export default function Game() {
                         setRowPointer(rowPointer + 1);
 
                     setLetterPointer(0);
-                    setWin(won);
                     setLoss(lost);
                 }
             }
@@ -78,6 +76,22 @@ export default function Game() {
             }
         }
     }
+
+    useEffect(() => {
+        const startingArray = [];
+        for (let i = 0; i < 6; i++)
+            startingArray.push(Array(5).fill(""));
+
+        const startingColors = [];
+        for (let i = 0; i < 6; i++)
+            startingColors.push(Array(5).fill("BLANK"));
+
+        setTries(startingArray);
+        setColors(startingColors);
+
+        if (contentRef.current)
+            contentRef.current.focus();
+    }, []);
 
     useEffect(() => {
         try {
@@ -100,22 +114,6 @@ export default function Game() {
             router.push("/");
         }
     }, [router]);
-
-    useEffect(() => {
-        const startingArray = [];
-        for (let i = 0; i < 6; i++)
-            startingArray.push(Array(5).fill(""));
-
-        const startingColors = [];
-        for (let i = 0; i < 6; i++)
-            startingColors.push(Array(5).fill("BLANK"));
-
-        setTries(startingArray);
-        setColors(startingColors);
-
-        if (contentRef.current)
-            contentRef.current.focus();
-    }, []);
 
     return (
         <div className={styles.content} tabIndex={-1} ref={contentRef} onKeyDown={keyPressed}>
@@ -152,7 +150,7 @@ export default function Game() {
             </div>
 
             <footer>
-                <Keyboard onKeyClick={keyPressed}/>
+                <Keyboard onKeyClick={keyPressed} colorState={colors} rowPointer={rowPointer} tries={tries} />
             </footer>
 
             <Help open={helpModalOpen} closeModalFunction={() => setHelpModalOpen(false)} />

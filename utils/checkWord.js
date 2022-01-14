@@ -11,8 +11,6 @@ export default function checkWord(guess, correctWord) {
     for (let x of correctWord)
         countCorrect[x]++;
 
-    console.log(countCorrect);
-
     const colors = [];
     guess.forEach((letter, i) => {
         countGuess[letter]++;
