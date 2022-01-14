@@ -13,13 +13,16 @@ export default function Home() {
     const [letterPointer, setLetterPointer] = useState(0);
     const [linkStatus, setLinkStatus] = useState("hidden");
     const [linkText, setLinkText] = useState("");
+    const [wordWrong, setWordWrong] = useState(false);
     const [helpModalOpen, setHelpModalOpen] = useState(false);
+    const [possibleWords, setPossibleWords] = useState([]);
     const contentRef = useRef(null);
 
     function keyPressed({ key }) {
         const keyUpper = key.toUpperCase();
 
         if (keyUpper === "BACKSPACE" && letterPointer > 0) {
+            setWordWrong(false);
             const newArray = [...letterArray];
             newArray[letterPointer - 1] = "";
             setLetterArray(newArray);
@@ -28,6 +31,7 @@ export default function Home() {
         else if (keyUpper === "ENTER")
             generateLink();
         else if (keyUpper.match(/^[A-Z]$/) && letterPointer < letterArray.length) {
+            setWordWrong(false);
             const newArray = [...letterArray];
             newArray[letterPointer] = keyUpper;
             setLetterArray(newArray);
@@ -36,7 +40,7 @@ export default function Home() {
     }
 
     function generateLink() {
-        if (letterArray.every(s => s.match(/^[A-Z]$/))) {
+        if (letterArray.every(s => s.match(/^[A-Z]$/)) && possibleWords.includes(letterArray.join(""))) {
             const data = Buffer.from(letterArray.join(""), "utf-8");
             const key = Math.floor(Math.random() * 256);
 
@@ -50,12 +54,23 @@ export default function Home() {
             const code = data_with_key.toString("hex");
             setLinkText(`${process.env.APP_URL}/${code}`);
             setLinkStatus("visible");
+        } else {
+            setWordWrong(true);
         }
     }
 
     useEffect(() => {
         if (contentRef.current)
             contentRef.current.focus();
+    }, []);
+
+    useEffect(() => {
+        async function fetchWords() {
+            const res = await fetch("/words.txt");
+            const data = await res.text();
+            setPossibleWords(data.split("\n"));
+        }
+        fetchWords();
     }, []);
 
     return (
@@ -72,7 +87,7 @@ export default function Home() {
                 <h1>Pense em uma palavra para outra pessoa adivinhar</h1>
                 <ul>
                     {letterArray.map((letter, i) => (
-                        <li key={i}>
+                        <li key={i} style={ wordWrong ? { borderColor: "#660f14" } : { opacity: 1 } }>
                             <p>{letterArray[i]}</p>
                         </li>
                     ))}

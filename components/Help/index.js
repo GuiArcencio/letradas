@@ -2,6 +2,8 @@ import Modal from "react-modal";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsGithub, BsTwitter } from "react-icons/bs";
 
+Modal.setAppElement("body");
+
 import styles from "../../styles/Help.module.scss";
 
 export default function Help({ open, closeModalFunction }) {

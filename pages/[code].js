@@ -26,7 +26,9 @@ export default function Game() {
     const [letterPointer, setLetterPointer] = useState(0);
     const [rowPointer, setRowPointer] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [wordWrong, setWordWrong] = useState(false);
     const [helpModalOpen, setHelpModalOpen] = useState(false);
+    const [possibleWords, setPossibleWords] = useState([]);
     const [loss, setLoss] = useState(false);
 
     const contentRef = useRef(null);
@@ -36,6 +38,7 @@ export default function Game() {
             const keyUpper = key.toUpperCase();
 
             if (keyUpper === "BACKSPACE" && letterPointer > 0) {
+                setWordWrong(false);
                 setTries(old => {
                     old[rowPointer][letterPointer - 1] = "";
                     return JSON.parse(JSON.stringify(old));
@@ -47,7 +50,8 @@ export default function Game() {
                 setLetterPointer(l => l - 1);
             }
             else if (keyUpper === "ENTER") {
-                if (letterPointer === tries[rowPointer].length) {
+                if (letterPointer === tries[rowPointer].length && possibleWords.includes(tries[rowPointer].join(""))) {
+                    setWordWrong(false);
                     const newColors = checkWord(tries[rowPointer], correctWord);
                     setColors(old => {
                         old[rowPointer] = [...newColors];
@@ -63,9 +67,12 @@ export default function Game() {
 
                     setLetterPointer(0);
                     setLoss(lost);
+                } else {
+                    setWordWrong(true);
                 }
             }
             else if (keyUpper.match(/^[A-Z]$/) && letterPointer < tries[rowPointer].length) {
+                setWordWrong(false);
                 setTries(old => {
                     old[rowPointer][letterPointer] = keyUpper;
                     return JSON.parse(JSON.stringify(old));
@@ -78,6 +85,15 @@ export default function Game() {
             }
         }
     }
+
+    useEffect(() => {
+        async function fetchWords() {
+            const res = await fetch("/words.txt");
+            const data = await res.text();
+            setPossibleWords(data.split("\n"));
+        }
+        fetchWords();
+    }, []);
 
     useEffect(() => {
         const startingArray = [];
@@ -144,10 +160,17 @@ export default function Game() {
                         {tries[row_i].map((letter, letter_i) => (
                             <li 
                                 key={`row${row_i}letter${letter_i}`} 
-                                style={{ 
-                                    backgroundColor: COLOR[colors[row_i][letter_i]],
-                                    opacity: row_i > rowPointer ? 0.3 : 1 
-                                }}
+                                style={ row_i === rowPointer && wordWrong ?
+                                    { 
+                                        backgroundColor: COLOR[colors[row_i][letter_i]],
+                                        opacity: row_i > rowPointer ? 0.3 : 1 ,
+                                        borderColor: "#660f14"
+                                    }
+                                    :
+                                    { 
+                                        backgroundColor: COLOR[colors[row_i][letter_i]],
+                                        opacity: row_i > rowPointer ? 0.3 : 1 
+                                    }}
                             >
                                 <p>{tries[row_i][letter_i]}</p>
                             </li>
