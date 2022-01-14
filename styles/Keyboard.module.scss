@@ -1,0 +1,47 @@
+@import "variables";
+
+.contentBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    ul {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+
+        li {
+            background-color: #0C0F1D;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+
+            // Prevents text from begin selected after double click
+            // (no idea why it works)
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -ms-user-select: none;
+
+            transition: background-color 0.3s;
+
+            p {
+                font-size: 1rem;
+                text-align: center;
+                line-height: 100%;
+            }
+        }
+
+        li:hover {
+            background-color: $blackish;
+        }
+    }
+}

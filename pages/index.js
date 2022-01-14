@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect, useRef } from "react";
+import Keyboard from "../components/keyboard";
 
 import styles from "../styles/Home.module.scss";
 
@@ -50,6 +51,8 @@ export default function Home() {
                     <h3>GERAR JOGO</h3>
                 </div>
             </div>
+
+            <Keyboard onKeyClick={keyPressed}/>
 
             <div className={styles.footer}>
                 <p>Criado por <a href="https://github.com/GuiArcencio" target="_blank" rel="noreferrer">GuiArcencio</a></p>
