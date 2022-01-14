@@ -122,6 +122,10 @@
 }
 
 @media (max-width: 650px) {
+    .content {
+        max-height: 100%;
+    }
+
     .main {
         h1 {
             font-size: 1.5rem;
