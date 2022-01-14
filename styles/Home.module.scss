@@ -14,7 +14,7 @@
     flex-direction: column;
     align-items: center;
     width: 60%;
-    gap: 2rem;
+    gap: 4rem;
     
     h1 {
         font-size: 2rem;
@@ -28,18 +28,45 @@
         gap: 0.6rem;
 
         li {
-            font-family: Lato, sans-serif;
-            font-weight: bold;
-            font-size: 2rem;
             width: 4rem;
             height: 4rem;
-            text-align: center;
             border-radius: 10px;
-            background-color: $darkblue;
-            color: $whitish;
+            background-color: $blackish;
             border: 5px solid $blackish;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            p {    
+                font-family: Lato, sans-serif;
+                font-weight: bold;
+                font-size: 2rem;
+                color: $whitish;
+                text-align: center;
+                line-height: 100%;
+            }
         }
     }
+}
+
+.generateButton {
+    background-color: #285921;
+    padding: 1.5rem 2.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    h3 {
+        text-align: center;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1.5rem;
+        letter-spacing: 0.1rem;
+    }
+}
+
+.generateButton:hover {
+    background-color: #204A1C;
 }
 
 .footer {
