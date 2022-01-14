@@ -1,10 +1,72 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
+
+import Keyboard from "../components/Keyboard";
+import checkWord from "../utils/checkWord";
+
+import styles from "../styles/Game.module.scss";
+
+const COLOR = {
+    "BLANK": "#1E3048",
+    "FILLED": "#06080F",
+    "YELLOW": "#8F891A",
+    "GREEN": "#35471C"
+};
 
 export default function Game() {
     const router = useRouter();
     const [correctWord, setCorrectWord] = useState("");
+    const [tries, setTries] = useState([]);
+    const [colors, setColors] = useState([]);
+    const [letterPointer, setLetterPointer] = useState(0);
+    const [rowPointer, setRowPointer] = useState(0);
+    const [gameOver, setGameOver] = useState(false);
+
+    const contentRef = useRef(null);
+
+    function keyPressed({ key }) {
+        if (!gameOver) {
+            const keyUpper = key.toUpperCase();
+
+            if (keyUpper === "BACKSPACE" && letterPointer > 0) {
+                setTries(old => {
+                    old[rowPointer][letterPointer - 1] = "";
+                    return old;
+                });
+                setColors(old => {
+                    old[rowPointer][letterPointer - 1] = "BLANK";
+                    return old;
+                });
+                setLetterPointer(letterPointer - 1);
+            }
+            else if (keyUpper === "ENTER") {
+                if (letterPointer === tries[rowPointer].length) {
+                    const newColors = checkWord(tries[rowPointer], correctWord);
+                    if (newColors.every(s => s === "GREEN") || rowPointer === tries.length - 1)
+                        setGameOver(true);
+
+                    setColors(old => {
+                        old[rowPointer] = [...newColors];
+                        return old;
+                    });
+                    setLetterPointer(0);
+                    setRowPointer(rowPointer + 1);
+                }
+            }
+            else if (keyUpper.match(/^[A-Z]$/) && letterPointer < tries[rowPointer].length) {
+                setTries(old => {
+                    old[rowPointer][letterPointer] = keyUpper;
+                    return old;
+                });
+                setColors(old => {
+                    old[rowPointer][letterPointer] = "FILLED";
+                    return old;
+                });
+                setLetterPointer(letterPointer + 1);
+            }
+        }
+    }
 
     useEffect(() => {
         try {
@@ -28,9 +90,52 @@ export default function Game() {
         }
     }, [router]);
 
+    useEffect(() => {
+        const startingArray = [];
+        for (let i = 0; i < 6; i++)
+            startingArray.push(Array(5).fill(""));
+
+        const startingColors = [];
+        for (let i = 0; i < 6; i++)
+            startingColors.push(Array(5).fill("BLANK"));
+
+        setTries(startingArray);
+        setColors(startingColors);
+
+        if (contentRef.current)
+            contentRef.current.focus();
+    }, []);
+
     return (
-        <div>
-            <p>{correctWord}</p>
+        <div className={styles.content} tabIndex={-1} ref={contentRef} onKeyDown={keyPressed}>
+            <Head>
+                <title>Letrados</title>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            </Head>
+            <header>    
+                <h1>
+                    Letrados
+                </h1>
+            </header>
+
+            <div className={styles.table}>
+                {tries.map((word, row_i) => (
+                    <ul key={`row${row_i}`}>
+                        {tries[row_i].map((letter, letter_i) => (
+                            <li 
+                                key={`row${row_i}letter${letter_i}`} 
+                                style={{ backgroundColor: COLOR[colors[row_i][letter_i]] }}
+                            >
+                                <p>{tries[row_i][letter_i]}</p>
+                            </li>
+                        ))}
+                    </ul>
+                ))}
+            </div>
+
+            <footer>
+                <Keyboard onKeyClick={keyPressed}/>
+            </footer>
         </div>
     );
 }

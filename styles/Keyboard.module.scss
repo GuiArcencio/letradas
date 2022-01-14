@@ -6,6 +6,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.3rem;
+    width: 100%;
 
     ul {
         display: flex;
@@ -19,7 +20,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem;
+            padding: 1rem 1rem;
             border-radius: 5px;
             cursor: pointer;
 
@@ -42,6 +43,19 @@
 
         li:hover {
             background-color: $blackish;
+        }
+    }
+}
+
+@media (max-width: 650px) {
+    .contentBox {
+        ul {
+            gap: 0;
+            justify-content: space-between;
+            width: 98%;
+            li {
+                padding: 1.5rem 0.7rem;
+            }
         }
     }
 }

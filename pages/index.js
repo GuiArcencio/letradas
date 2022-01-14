@@ -87,11 +87,9 @@ export default function Home() {
                 </CopyToClipboard>
             </div>
 
-            <Keyboard onKeyClick={keyPressed}/>
-
-            <div className={styles.footer}>
-                <p>Criado por <a href="https://github.com/GuiArcencio" target="_blank" rel="noreferrer">GuiArcencio</a></p>
-            </div>
+            <footer className={styles.keyboard}>
+                <Keyboard onKeyClick={keyPressed}/>
+            </footer>
         </div>
     );
 }
