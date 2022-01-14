@@ -1,6 +1,6 @@
 import { CgBackspace } from "react-icons/cg";
 
-import styles from "../styles/Keyboard.module.scss";
+import styles from "../../styles/Keyboard.module.scss";
 
 const firstRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
 const secondRow = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
