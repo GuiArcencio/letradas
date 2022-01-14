@@ -121,6 +121,16 @@
     width: 100%;
 }
 
+.question {
+    color: $whitish;
+    font-size: 1.5rem;
+    opacity: 0.5;
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+    cursor: pointer;
+}
+
 @media (max-width: 650px) {
     .content {
         max-height: 100%;
@@ -137,6 +147,10 @@
                 height: 3.4rem;
             }
         }
+    }
+
+    .linkClipboard {
+        max-width: 90%;
     }
 
     .generateButton {

@@ -1,8 +1,10 @@
 import Head from "next/head";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
+import { BsQuestionCircle } from "react-icons/bs";
 
 import Keyboard from "../components/Keyboard";
+import Help from "../components/Help";
 import checkWord from "../utils/checkWord";
 
 import styles from "../styles/Game.module.scss";
@@ -22,6 +24,7 @@ export default function Game() {
     const [letterPointer, setLetterPointer] = useState(0);
     const [rowPointer, setRowPointer] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [helpModalOpen, setHelpModalOpen] = useState(false);
     const [win, setWin] = useState(false);
     const [loss, setLoss] = useState(false);
 
@@ -120,6 +123,10 @@ export default function Game() {
                 <title>Letrados</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
+            <div className={styles.question}>
+                <BsQuestionCircle onClick={() => setHelpModalOpen(true)} />
+            </div>
+
             <header>    
                 <h1>
                     Letrados
@@ -147,6 +154,8 @@ export default function Game() {
             <footer>
                 <Keyboard onKeyClick={keyPressed}/>
             </footer>
+
+            <Help open={helpModalOpen} closeModalFunction={() => setHelpModalOpen(false)} />
         </div>
     );
 }

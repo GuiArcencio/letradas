@@ -1,8 +1,10 @@
 import Head from "next/head";
 import { useState, useEffect, useRef } from "react";
 import { HiClipboardCopy } from "react-icons/hi";
+import { BsQuestionCircle } from "react-icons/bs";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Keyboard from "../components/Keyboard";
+import Help from "../components/Help";
 
 import styles from "../styles/Home.module.scss";
 
@@ -11,6 +13,7 @@ export default function Home() {
     const [letterPointer, setLetterPointer] = useState(0);
     const [linkStatus, setLinkStatus] = useState("hidden");
     const [linkText, setLinkText] = useState("");
+    const [helpModalOpen, setHelpModalOpen] = useState(false);
     const contentRef = useRef(null);
 
     function keyPressed({ key }) {
@@ -61,6 +64,9 @@ export default function Home() {
                 <title>Letrados</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
+            <div className={styles.question}>
+                <BsQuestionCircle onClick={() => setHelpModalOpen(true)} />
+            </div>
 
             <div className={styles.main}>
                 <h1>Pense em uma palavra para outra pessoa adivinhar</h1>
@@ -90,6 +96,8 @@ export default function Home() {
             <footer className={styles.keyboard}>
                 <Keyboard onKeyClick={keyPressed}/>
             </footer>
+
+            <Help open={helpModalOpen} closeModalFunction={() => setHelpModalOpen(false)} />
         </div>
     );
 }
