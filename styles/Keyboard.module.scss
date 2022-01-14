@@ -54,7 +54,12 @@
             justify-content: space-between;
             width: 98%;
             li {
-                padding: 1.5rem 0.7rem;
+                padding: 0 0;
+                width: 2.1rem;
+                height: 3rem;
+                p {
+                    font-size: 0.7rem;
+                }
             }
         }
     }

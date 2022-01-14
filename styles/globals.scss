@@ -9,9 +9,10 @@
   box-sizing: border-box;
 }
 
-body {
+body, html {
   background-color: $darkblue;
   color: $whitish;
+  height: 100%;
 }
 
 a {

@@ -22,6 +22,8 @@ export default function Game() {
     const [letterPointer, setLetterPointer] = useState(0);
     const [rowPointer, setRowPointer] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [win, setWin] = useState(false);
+    const [loss, setLoss] = useState(false);
 
     const contentRef = useRef(null);
 
@@ -43,15 +45,21 @@ export default function Game() {
             else if (keyUpper === "ENTER") {
                 if (letterPointer === tries[rowPointer].length) {
                     const newColors = checkWord(tries[rowPointer], correctWord);
-                    if (newColors.every(s => s === "GREEN") || rowPointer === tries.length - 1)
-                        setGameOver(true);
-
                     setColors(old => {
                         old[rowPointer] = [...newColors];
                         return old;
                     });
+
+                    const won = !!newColors.every(s => s === "GREEN");
+                    const lost = rowPointer === tries.length - 1;
+                    if (won || lost)
+                        setGameOver(true);
+                    else
+                        setRowPointer(rowPointer + 1);
+
                     setLetterPointer(0);
-                    setRowPointer(rowPointer + 1);
+                    setWin(won);
+                    setLoss(lost);
                 }
             }
             else if (keyUpper.match(/^[A-Z]$/) && letterPointer < tries[rowPointer].length) {
@@ -124,7 +132,10 @@ export default function Game() {
                         {tries[row_i].map((letter, letter_i) => (
                             <li 
                                 key={`row${row_i}letter${letter_i}`} 
-                                style={{ backgroundColor: COLOR[colors[row_i][letter_i]] }}
+                                style={{ 
+                                    backgroundColor: COLOR[colors[row_i][letter_i]],
+                                    opacity: row_i > rowPointer ? 0.3 : 1 
+                                }}
                             >
                                 <p>{tries[row_i][letter_i]}</p>
                             </li>

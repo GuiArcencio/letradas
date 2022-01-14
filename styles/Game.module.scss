@@ -67,11 +67,15 @@
 
     .table {
         gap: 0.3rem;
+        max-width: 100%;
         ul {
             gap: 0.3rem;
             li {
-                width: 3.5rem;
-                height: 3.5rem;
+                width: 3rem;
+                height: 3rem;
+                p {
+                    font-size: 1.8rem;
+                }
             }
         }
     }
