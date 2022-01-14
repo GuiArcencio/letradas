@@ -34,11 +34,13 @@ export default function Home() {
 
     function generateLink() {
         if (letterArray.every(s => s.match(/^[A-Z]$/))) {
-            const data = Buffer.from(letterArray.join(""));
+            const data = Buffer.from(letterArray.join(""), "utf-8");
             const key = Math.floor(Math.random() * 256);
 
-            for (let i in data)
-                data.writeUInt8(key ^ data[i], i);
+            for (let i = 0; i < data.length; i++) {
+                const byte = data.readUInt8(i);
+                data.writeUInt8(byte ^ key, i);
+            }
 
             const data_with_key = Buffer.concat([data, Buffer.from([key])]);
 
