@@ -10,16 +10,23 @@ export default function checkWord(guess, correctWord) {
 
     for (let x of correctWord)
         countCorrect[x]++;
+    for (let x of guess)
+        countGuess[x]++;
 
-    const colors = [];
+    const colors = Array(guess.length).fill("FILLED");
+
+    correctWord.split("").forEach((correctLetter, i) => {
+        if (guess[i] === correctLetter) {
+            colors[i] = "GREEN";
+            countCorrect[correctLetter]--;
+        }
+    });
+
     guess.forEach((letter, i) => {
-        countGuess[letter]++;
-        if (countGuess[letter] > countCorrect[letter])
-            colors.push("FILLED");
-        else if (letter === correctWord[i])
-            colors.push("GREEN");
-        else
-            colors.push("YELLOW");
+        if (countCorrect[letter] >= 1 && colors[i] === "FILLED") {
+            colors[i] = "YELLOW";
+            countCorrect[letter]--;
+        }
     });
 
     return colors;

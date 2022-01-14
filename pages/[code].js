@@ -1,7 +1,9 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { BsQuestionCircle } from "react-icons/bs";
+import { AiOutlineHome } from "react-icons/ai";
 
 import Keyboard from "../components/Keyboard";
 import Help from "../components/Help";
@@ -36,20 +38,20 @@ export default function Game() {
             if (keyUpper === "BACKSPACE" && letterPointer > 0) {
                 setTries(old => {
                     old[rowPointer][letterPointer - 1] = "";
-                    return old;
+                    return JSON.parse(JSON.stringify(old));
                 });
                 setColors(old => {
                     old[rowPointer][letterPointer - 1] = "BLANK";
-                    return old;
+                    return JSON.parse(JSON.stringify(old));
                 });
-                setLetterPointer(letterPointer - 1);
+                setLetterPointer(l => l - 1);
             }
             else if (keyUpper === "ENTER") {
                 if (letterPointer === tries[rowPointer].length) {
                     const newColors = checkWord(tries[rowPointer], correctWord);
                     setColors(old => {
                         old[rowPointer] = [...newColors];
-                        return old;
+                        return JSON.parse(JSON.stringify(old));
                     });
 
                     const won = !!newColors.every(s => s === "GREEN");
@@ -57,7 +59,7 @@ export default function Game() {
                     if (won || lost)
                         setGameOver(true);
                     else
-                        setRowPointer(rowPointer + 1);
+                        setRowPointer(r => r + 1);
 
                     setLetterPointer(0);
                     setLoss(lost);
@@ -66,13 +68,13 @@ export default function Game() {
             else if (keyUpper.match(/^[A-Z]$/) && letterPointer < tries[rowPointer].length) {
                 setTries(old => {
                     old[rowPointer][letterPointer] = keyUpper;
-                    return old;
+                    return JSON.parse(JSON.stringify(old));
                 });
                 setColors(old => {
                     old[rowPointer][letterPointer] = "FILLED";
-                    return old;
+                    return JSON.parse(JSON.stringify(old));
                 });
-                setLetterPointer(letterPointer + 1);
+                setLetterPointer(l => l + 1);
             }
         }
     }
@@ -124,6 +126,11 @@ export default function Game() {
             <div className={styles.question}>
                 <BsQuestionCircle onClick={() => setHelpModalOpen(true)} />
             </div>
+            <Link href="/" passHref>
+                <div className={styles.home}>
+                    <AiOutlineHome />
+                </div>
+            </Link>
 
             <header>    
                 <h1>
