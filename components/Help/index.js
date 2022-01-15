@@ -29,7 +29,7 @@ export default function Help({ open, closeModalFunction }) {
                 </div>
                 <h3>A letra J não está na palavra.</h3>
                 <hr></hr>
-                <h3>Letrados é a versão <span style={{ fontStyle: "italic" }}>multiplayer</span> de <a href="https://www.powerlanguage.co.uk/wordle/" target="_blank" rel="noreferrer">Wordle</a>.</h3>
+                <h3>Letradas é a versão <span style={{ fontStyle: "italic" }}>multiplayer</span> de <a href="https://www.powerlanguage.co.uk/wordle/" target="_blank" rel="noreferrer">Wordle</a>.</h3>
 
                 
                 <footer className={styles.footer}>

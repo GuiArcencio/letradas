@@ -145,7 +145,7 @@ export default function Game() {
             onKeyDown={keyPressed}
         >
             <Head>
-                <title>Letrados</title>
+                <title>Letradas</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 <link rel="shortcut icon" href="/favicon.ico" />
             </Head>
@@ -160,7 +160,7 @@ export default function Game() {
 
             <header>    
                 <h1>
-                    Letrados
+                    Letradas
                 </h1>
             </header>
 

@@ -80,7 +80,7 @@ export default function Home() {
     return (
         <div className={styles.content} onKeyDown={keyPressed} tabIndex={-1} ref={contentRef}>
             <Head>
-                <title>Letrados</title>
+                <title>Letradas</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 <link rel="shortcut icon" href="/favicon.ico" />
             </Head>
