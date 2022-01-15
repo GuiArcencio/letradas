@@ -133,8 +133,17 @@ export default function Game() {
         }
     }, [router]);
 
+    useEffect(() => {
+        contentRef.current.style.height = `${window.innerHeight}px`;
+    });
+
     return (
-        <div className={styles.content} tabIndex={-1} ref={contentRef} onKeyDown={keyPressed}>
+        <div 
+            className={styles.content}
+            tabIndex={-1}
+            ref={contentRef}
+            onKeyDown={keyPressed}
+        >
             <Head>
                 <title>Letrados</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />

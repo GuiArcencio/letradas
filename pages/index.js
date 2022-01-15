@@ -73,6 +73,10 @@ export default function Home() {
         fetchWords();
     }, []);
 
+    useEffect(() => {
+        contentRef.current.style.height = `${window.innerHeight}px`;
+    });
+
     return (
         <div className={styles.content} onKeyDown={keyPressed} tabIndex={-1} ref={contentRef}>
             <Head>
