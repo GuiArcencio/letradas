@@ -6,6 +6,8 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Keyboard from "../components/Keyboard";
 import Help from "../components/Help";
 
+import { hexToBase36 } from "../utils/base36";
+
 import styles from "../styles/Home.module.scss";
 
 export default function Home() {
@@ -51,7 +53,7 @@ export default function Home() {
 
             const data_with_key = Buffer.concat([data, Buffer.from([key])]);
 
-            const code = data_with_key.toString("hex");
+            const code = hexToBase36(data_with_key.toString("hex"));
             setLinkText(`${process.env.APP_URL}/${code}`);
             setLinkStatus("visible");
         } else {

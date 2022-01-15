@@ -8,6 +8,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import Keyboard from "../components/Keyboard";
 import Help from "../components/Help";
 import checkWord from "../utils/checkWord";
+import { base36ToHex } from "../utils/base36";
 
 import styles from "../styles/Game.module.scss";
 
@@ -43,10 +44,6 @@ export default function Game() {
                     old[rowPointer][letterPointer - 1] = "";
                     return JSON.parse(JSON.stringify(old));
                 });
-                setColors(old => {
-                    old[rowPointer][letterPointer - 1] = "BLANK";
-                    return JSON.parse(JSON.stringify(old));
-                });
                 setLetterPointer(l => l - 1);
             }
             else if (keyUpper === "ENTER") {
@@ -75,10 +72,6 @@ export default function Game() {
                 setWordWrong(false);
                 setTries(old => {
                     old[rowPointer][letterPointer] = keyUpper;
-                    return JSON.parse(JSON.stringify(old));
-                });
-                setColors(old => {
-                    old[rowPointer][letterPointer] = "FILLED";
                     return JSON.parse(JSON.stringify(old));
                 });
                 setLetterPointer(l => l + 1);
@@ -114,7 +107,7 @@ export default function Game() {
     useEffect(() => {
         try {
             if (router.query.code) {
-                const code = Buffer.from(router.query.code, "hex");
+                const code = Buffer.from(base36ToHex(router.query.code), "hex");
                 const key = code[code.length - 1];
 
                 const decoded = Buffer.alloc(5);
