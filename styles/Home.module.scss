@@ -93,6 +93,7 @@
         align-items: center;
         text-align: center;
         padding: 0 1rem;
+        overflow-x: hidden;
     }
 
     .linkClipboardButton {
@@ -132,10 +133,6 @@
 }
 
 @media (max-width: 650px) {
-    .content {
-        max-height: 100%;
-    }
-
     .main {
         h1 {
             font-size: 1.5rem;
