@@ -7,6 +7,7 @@ import Keyboard from '../components/Keyboard'
 import Help from '../components/Help'
 
 import styles from '../styles/Home.module.scss'
+import { encodeWordIndex } from '../utils/word-encoding'
 
 export default function Home() {
     const [letterArray, setLetterArray] = useState(['', '', '', '', ''])
@@ -40,18 +41,10 @@ export default function Home() {
 
     function generateLink() {
         if (letterArray.every(s => s.match(/^[A-Z]$/)) && possibleWords.includes(letterArray.join(''))) {
-            const data = Buffer.from(letterArray.join(''), 'utf-8')
-            const key = Math.floor(Math.random() * 256)
-
-            for (let i = 0; i < data.length; i++) {
-                const byte = data.readUInt8(i)
-                data.writeUInt8(byte ^ key, i)
-            }
-
-            const data_with_key = Buffer.concat([data, Buffer.from([key])])
-
-            const code = data_with_key.toString('hex')
-            setLinkText(`${process.env.APP_URL}/${code}`)
+            const word = letterArray.join('')
+            const wordIndex = possibleWords.indexOf(word)
+            const encodedWordIndex = encodeWordIndex(wordIndex)
+            setLinkText(`${process.env.APP_URL}/${encodedWordIndex}`)
             setLinkStatus('visible')
         }
         else {

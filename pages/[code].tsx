@@ -5,11 +5,13 @@ import { useRouter } from 'next/router'
 import { BsQuestionCircle } from 'react-icons/bs'
 import { AiOutlineHome } from 'react-icons/ai'
 
+import useSWR from 'swr'
 import Keyboard from '../components/Keyboard'
 import Help from '../components/Help'
 import checkWord from '../utils/checkWord'
 
 import styles from '../styles/Game.module.scss'
+import { decodeWordIndex } from '../utils/word-encoding'
 
 const COLOR = {
     BLANK: '#1E3048',
@@ -17,6 +19,11 @@ const COLOR = {
     YELLOW: '#8F891A',
     GREEN: '#35471C',
 }
+
+// @ts-expect-error support spreading arguments to swr
+const fetchPossibleWords = (...args) => fetch(...args)
+    .then(res => res.text())
+    .then(data => data.split('\n'))
 
 export default function Game() {
     const router = useRouter()
@@ -28,9 +35,9 @@ export default function Game() {
     const [gameOver, setGameOver] = useState(false)
     const [wordWrong, setWordWrong] = useState(false)
     const [helpModalOpen, setHelpModalOpen] = useState(false)
-    const [possibleWords, setPossibleWords] = useState([])
 
     const contentRef = useRef(null)
+    const { data: possibleWords } = useSWR('/words.txt', fetchPossibleWords)
 
     function keyPressed({ key }) {
         if (!gameOver) {
@@ -86,15 +93,6 @@ export default function Game() {
     }
 
     useEffect(() => {
-        async function fetchWords() {
-            const res = await fetch('/words.txt')
-            const data = await res.text()
-            setPossibleWords(data.split('\n'))
-        }
-        fetchWords()
-    }, [])
-
-    useEffect(() => {
         const startingArray = []
         for (let i = 0; i < 6; i++)
             startingArray.push(Array(5).fill(''))
@@ -112,21 +110,12 @@ export default function Game() {
 
     useEffect(() => {
         try {
-            const { code: codeInHex } = router.query
-            if (codeInHex) {
-                const code = Buffer.from(String(codeInHex), 'hex')
-                const key = code[code.length - 1]
-
-                const decoded = Buffer.alloc(5)
-                for (let i = 0; i < decoded.length; i++) {
-                    const byte = code.readUInt8(i)
-                    decoded.writeUInt8(byte ^ key, i)
-                }
-
-                const word = decoded.toString('utf-8')
-                if (!word.match(/^[A-Z]{5}$/)) throw new Error('Invalid code')
-
-                setCorrectWord(decoded.toString('utf-8'))
+            const { code } = router.query
+            if (code) {
+                const decodedWordIndex = decodeWordIndex(String(code))
+                const word = possibleWords[decodedWordIndex]
+                if (word === undefined) throw new Error('Word not found')
+                setCorrectWord(word)
             }
         }
         catch (e) {
