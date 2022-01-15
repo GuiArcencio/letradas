@@ -102,3 +102,34 @@
     right: 0.3rem;
     cursor: pointer;
 }
+
+.shareButton {
+    display: flex;
+    gap: 0.6rem;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    max-width: 60%;
+    max-width: 20rem;
+    background-color: #285921;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+    text-align: center;
+
+    h3 {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1rem;
+        letter-spacing: 0.1rem;
+    }
+}
+
+.shareButton:hover {
+    background-color: #204A1C;
+}

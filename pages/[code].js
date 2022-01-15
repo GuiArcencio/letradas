@@ -2,8 +2,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import { BsQuestionCircle } from "react-icons/bs";
+import { BsQuestionCircle, BsShareFill } from "react-icons/bs";
 import { AiOutlineHome } from "react-icons/ai";
+import { isMobile } from "react-device-detect";
 
 import Keyboard from "../components/Keyboard";
 import Help from "../components/Help";
@@ -79,6 +80,26 @@ export default function Game() {
         }
     }
 
+    function generateShareText() {
+        const EMOJI = {
+            "GREEN": "🟩",
+            "YELLOW": "🟨",
+            "FILLED": "⬛"
+        };
+
+        const header = `Letradas ${router.query.code} ${loss ? "X" : rowPointer+1}/6\n`;
+
+        let blocks = "";
+        for (let i = 0; i <= rowPointer; i++) {
+            const rowBlocks = colors[i].map(color => EMOJI[color]);
+            blocks += `${rowBlocks.join("")}`;
+            if (i !== rowPointer)
+                blocks += "\n";
+        }
+
+        return `${header}\n${blocks}`;
+    }
+
     useEffect(() => {
         async function fetchWords() {
             const res = await fetch("/words.txt");
@@ -122,6 +143,7 @@ export default function Game() {
                 setCorrectWord(decoded.toString("utf-8"));
             }
         } catch (e) {
+            console.error(e);
             router.push("/");
         }
     }, [router]);
@@ -181,6 +203,27 @@ export default function Game() {
                     </ul>
                 ))}
             </div>
+
+            { isMobile ?
+                <div 
+                    className={styles.shareButton} 
+                    style={{ visibility: gameOver ? "visible" : "hidden" }}
+                    onClick={() => navigator.share({ text: generateShareText() })}
+                >
+                    <BsShareFill />
+                    <h3>COMPARTILHAR</h3>
+                </div>
+                :
+                <div 
+                    className={styles.shareButton} 
+                    style={{ visibility: gameOver ? "visible" : "hidden" }}
+                    onClick={() => navigator.clipboard.writeText(generateShareText())}
+                >
+                    <BsShareFill />
+                    <h3>COMPARTILHAR</h3>
+                </div>
+            }
+            
 
             <footer>
                 <Keyboard onKeyClick={keyPressed} colorState={colors} rowPointer={rowPointer} tries={tries} />
