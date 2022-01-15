@@ -20,7 +20,7 @@ export default function Help({ open, closeModalFunction }) {
                     <p>G</p>
                 </div>
                 <h3>A letra G está na palavra e na posição correta.</h3>
-                <div className={styles.letter} style={{ backgroundColor: "#8F891A" }}>
+                <div className={styles.letter} style={{ backgroundColor: "#9C7C00" }}>
                     <p>P</p>
                 </div>
                 <h3>A letra P está na palavra mas na posição incorreta.</h3>

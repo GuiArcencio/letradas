@@ -25,7 +25,7 @@ export default function Keyboard({ onKeyClick, colorState, rowPointer, tries }) 
         else if (keyColors[letter] === WRONG)
             return { opacity: 0.3 };
         else if (keyColors[letter] === YELLOW)
-            return { backgroundColor: "#8F891A" };
+            return { backgroundColor: "#9C7C00" };
         else if (keyColors[letter] === GREEN)
             return { backgroundColor: "#35471C" };
     }

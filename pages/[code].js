@@ -14,7 +14,7 @@ import styles from "../styles/Game.module.scss";
 const COLOR = {
     "BLANK": "#1E3048",
     "FILLED": "#06080F",
-    "YELLOW": "#8F891A",
+    "YELLOW": "#9C7C00",
     "GREEN": "#35471C"
 };
 
